@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import Loading from './components/loading';
+import Navbar from './components/navbar';
+import Quiz from './containers/Quiz'
+import './App.css'
 
 function App() {
+  const [loading,setLoading]=useState(false)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {loading? <Loading/>
+      :
+     <div>
+      <Navbar/>
+     <Quiz/>
+     </div>
+  }
     </div>
   );
 }

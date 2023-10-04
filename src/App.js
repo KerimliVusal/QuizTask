@@ -5,14 +5,18 @@ import Quiz from './containers/Quiz'
 import './App.css'
 
 function App() {
-  const [loading,setLoading]=useState(false)
-
+  const [loading,setLoading]=useState(true)
+useEffect(()=>{
+setTimeout(()=>{
+setLoading(false)
+},2000)
+},[])
   return (
     <div className="App">
       {loading? <Loading/>
       :
      <div>
-      <Navbar/>
+      {/* <Navbar/> */}
      <Quiz/>
      </div>
   }

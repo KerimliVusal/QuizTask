@@ -16,7 +16,7 @@ setLoading(false)
       {loading? <Loading/>
       :
      <div>
-      {/* <Navbar/> */}
+      <Navbar/>
      <Quiz/>
      </div>
   }

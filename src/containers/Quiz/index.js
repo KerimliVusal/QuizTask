@@ -57,7 +57,7 @@ const Quiz = () => {
     } else {
       const correctAnswers = selectedAnswers.filter(item => item.isCorrect === true)?.length
       const wrongAnswers = selectedAnswers.filter(item => item.isCorrect === false)?.length
-      const percentageScore = questions?.length === 0 ? 0 : (correctAnswers / questions?.length) * 100;
+      const percentageScore = questions?.length === 0 ? 0 : ((correctAnswers / questions?.length)?.toFixed(2)) * 100;
       setActiveQuestion(0)
       setShowResult(true)
       setIsTimerRunning(false)

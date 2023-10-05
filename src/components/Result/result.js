@@ -1,7 +1,7 @@
 import { Row, Col } from 'antd'
 import { questiondata } from "../../data/index"
 
-const Result = ({ result, reset }) => {
+const Result = ({ result, reset,show }) => {
     const { questions } = questiondata
 
     return (<>
@@ -47,6 +47,7 @@ const Result = ({ result, reset }) => {
 
     <Row>
       <Col className='Resultbutton' >
+        <button onClick={() => show()}>Review</button>
         <button onClick={() => reset()}>Reset</button>
       </Col>
     </Row>

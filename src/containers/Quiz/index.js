@@ -9,6 +9,7 @@ const Quiz = () => {
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [selectedAnswers, setSelectedAnswers] = useState([])
   const [showResult, setShowResult] = useState(false)
+  const [shows, setShow] = useState(false)
   const [returnBack, setReturnBack] = useState(false)
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null)
   const [result, setResult] = useState({
@@ -51,21 +52,20 @@ const Quiz = () => {
 
   const onClickNext = () => {
     setSelectedAnswerIndex(null)
-    setResult((prev) =>
-      selectedAnswer
-        ? {
-          ...prev,
-          score: prev.score + 5,
-          correctAnswers: prev.correctAnswers + 1,
-        }
-        : { ...prev, wrongAnswers: prev.wrongAnswers + 1 }
-    )
     if (activeQuestion !== questions.length - 1) {
       setActiveQuestion((prev) => prev + 1)
     } else {
+      const correctAnswers = selectedAnswers.filter(item => item.isCorrect === true)?.length
+      const wrongAnswers = selectedAnswers.filter(item => item.isCorrect === false)?.length
+      const percentageScore = questions?.length === 0 ? 0 : (correctAnswers / questions?.length) * 100;
       setActiveQuestion(0)
       setShowResult(true)
       setIsTimerRunning(false)
+      setResult({
+        score:percentageScore ,
+        correctAnswers: correctAnswers,
+        wrongAnswers: wrongAnswers,
+      })
 
     }
 
@@ -76,7 +76,7 @@ const Quiz = () => {
       setActiveQuestion((prev) => prev - 1)
     }
   }
- 
+
   const onAnswerSelected = (answer, index) => {
     const existingAnswerIndex = selectedAnswers.findIndex(item => item.id === id);
 
@@ -105,6 +105,7 @@ const Quiz = () => {
   const reset = () => {
     setActiveQuestion(0)
     setShowResult(false)
+    setShow(false)
     setSeconds(60)
     setSelectedAnswers([])
     setIsTimerRunning(true)
@@ -114,6 +115,11 @@ const Quiz = () => {
       wrongAnswers: 0,
     })
 
+  }
+  const show = () => {
+    setShow(true)
+    setActiveQuestion(0)
+    setShowResult(false)
   }
   return (<div className=''>
     {!showResult ? (<>
@@ -140,26 +146,28 @@ const Quiz = () => {
                   <li
                     onClick={() => onAnswerSelected(answer, index)}
                     key={answer}
-                    className={`${showResult ?
-                      selectedAnswerIndex === index
-                        ? selectedAnswers[index]?.isCorrect
+                    className={`${shows
+                        ? selectedAnswers.find((item) => item.id === id)?.index === index
+                          ? selectedAnswers.find((item) => item.id === id)?.isCorrect
+                            ? 'selectedAnswer'
+                            : 'incorrect'
+                          : ''
+                        : returnBack || selectedAnswers.find((item) => item.id === id)?.index === index
                           ? 'selectedAnswer'
-                          : 'incorrect'
-                        : ''
-                      : returnBack?'':selectedAnswerIndex === index ? 'selectedAnswer' : ''
+                          : ''
                       }`}
                   >
                     <span>
                       {answer}
                     </span>
-                    {showResult && selectedAnswerIndex === index && (
+                    {shows && selectedAnswers.find((item) => item.id === id)?.index === index ? (
                       <span
-                        className={`correctAnswer ${selectedAnswers[index]?.isCorrect ? 'correct' : 'falsed'
+                        className={`correctAnswer ${selectedAnswers.find((item) => item.id === id)?.isCorrect ? 'correct' : 'falsed'
                           }`}
                       >
-                        {selectedAnswers[index]?.isCorrect ? ' ✓' : ' ✗'}
+                        {selectedAnswers.find((item) => item.id === id)?.isCorrect ? ' ✓' : ' ✗'}
                       </span>
-                    )}
+                    ) : null}
                   </li>
                 ))}
               </ul>
@@ -197,7 +205,7 @@ const Quiz = () => {
         </Row>
       </div>
     </>) : (
-      <Result result={result} reset={reset} />
+      <Result result={result} reset={reset} show={show} />
     )}
   </div>
   )

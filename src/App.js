@@ -9,14 +9,14 @@ function App() {
 useEffect(()=>{
 setTimeout(()=>{
 setLoading(false)
-},2000)
+},4000)
 },[])
   return (
     <div className="App">
       {loading? <Loading/>
       :
      <div>
-      {/* <Navbar/> */}
+      <Navbar/>
      <Quiz/>
      </div>
   }

@@ -264,7 +264,8 @@ overflow: hidden;
 .Resultbutton {
   width: 100%;
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
+  
 }
 
 .resultrow button {
